@@ -28,6 +28,10 @@ export async function optimizeRoute({ stops, depotIndex = 0, returnToDepot = tru
 }
 
 function errorMessage(status, data) {
+  if (status === 502) {
+    return 'The road-routing service is not responding right now. Please try again in a moment.'
+  }
+
   const detail = data?.detail
   if (typeof detail === 'string') return detail
   if (Array.isArray(detail) && detail.length > 0) return detail[0].msg

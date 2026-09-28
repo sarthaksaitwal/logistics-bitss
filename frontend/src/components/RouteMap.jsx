@@ -13,32 +13,39 @@ function AddStopOnClick({ onAdd }) {
   return null
 }
 
-function RouteMap({ stops, result, loading, onAddStop, onMoveStop }) {
-  const order = result?.order
-
+function RouteMap({ stops, order, geometry, loading, onAddStop, onMoveStop }) {
   return (
-    <MapContainer center={DELHI_CENTER} zoom={12} className="route-map">
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <div className="map-area">
+      <MapContainer center={DELHI_CENTER} zoom={12} className="route-map">
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
 
-      <AddStopOnClick onAdd={onAddStop} />
-      <RouteLine geometry={result?.geometry} loading={loading} />
+        <AddStopOnClick onAdd={onAddStop} />
+        <RouteLine geometry={geometry} loading={loading} />
 
-      {stops.map((stop, index) => {
-        const position = order ? order.indexOf(stop.id) : index
-        return (
-          <StopMarker
-            key={stop.id}
-            stop={stop}
-            label={position === 0 ? 'D' : String(position)}
-            isDepot={position === 0}
-            onMove={onMoveStop}
-          />
-        )
-      })}
-    </MapContainer>
+        {stops.map((stop) => {
+          const position = order.indexOf(stop.id)
+          return (
+            <StopMarker
+              key={stop.id}
+              stop={stop}
+              label={position === 0 ? 'D' : String(position)}
+              isDepot={position === 0}
+              onMove={onMoveStop}
+            />
+          )
+        })}
+      </MapContainer>
+
+      {loading && (
+        <div className="map-status" role="status">
+          <span className="spinner" />
+          Optimizing route…
+        </div>
+      )}
+    </div>
   )
 }
 

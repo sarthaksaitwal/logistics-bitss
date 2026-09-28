@@ -19,21 +19,33 @@ function nextStopName(stops) {
   return `Stop ${n}`
 }
 
-function matchesStops(result, stops) {
-  if (!result || result.order.length !== stops.length) return false
+function entryOrder(stops, depot) {
+  if (!depot) return []
+  return [depot.id, ...stops.filter((stop) => stop.id !== depot.id).map((stop) => stop.id)]
+}
+
+function matchesStops(result, stops, depot) {
+  if (!result || !depot || result.order.length !== stops.length) return false
+  if (result.order[0] !== depot.id) return false
   const ids = new Set(stops.map((stop) => stop.id))
   return result.order.every((id) => ids.has(id))
 }
 
 function App() {
   const [stops, setStops] = useState(SAMPLE_STOPS)
+  const [depotId, setDepotId] = useState(SAMPLE_STOPS[0].id)
+  const [returnToDepot, setReturnToDepot] = useState(true)
   const { result, loading, error, optimize } = useRouteOptimizer()
-  const route = matchesStops(result, stops) ? result : null
+
+  const depot = stops.find((stop) => stop.id === depotId) ?? stops[0]
+  const depotIndex = depot ? stops.indexOf(depot) : 0
+  const route = matchesStops(result, stops, depot) ? result : null
+  const order = route ? route.order : entryOrder(stops, depot)
 
   useEffect(() => {
     if (stops.length < 2) return
-    optimize({ stops })
-  }, [stops, optimize])
+    optimize({ stops, depotIndex, returnToDepot })
+  }, [stops, depotIndex, returnToDepot, optimize])
 
   function addStop({ lat, lng }) {
     setStops((current) => {
@@ -50,21 +62,43 @@ function App() {
 
   function removeStop(id) {
     setStops((current) => current.filter((stop) => stop.id !== id))
+    if (id === depotId) setDepotId(null)
   }
+
+  function resetStops() {
+    setStops(SAMPLE_STOPS)
+    setDepotId(SAMPLE_STOPS[0].id)
+    setReturnToDepot(true)
+  }
+
+  function clearStops() {
+    setStops([])
+    setDepotId(null)
+  }
+
 
   return (
     <div className="app">
       <Sidebar
         stops={stops}
-        result={route}
+        order={order}
+        route={route}
+        depotId={depot?.id}
+        returnToDepot={returnToDepot}
         loading={loading}
         error={error}
-        onOptimize={() => optimize({ stops })}
+        onOptimize={() => optimize({ stops, depotIndex, returnToDepot })}
         onRemoveStop={removeStop}
+        onDepotChange={setDepotId}
+        onReturnChange={setReturnToDepot}
+        onReset={resetStops}
+        onClear={clearStops}
+
       />
       <RouteMap
         stops={stops}
-        result={route}
+        order={order}
+        geometry={route?.geometry}
         loading={loading}
         onAddStop={addStop}
         onMoveStop={moveStop}

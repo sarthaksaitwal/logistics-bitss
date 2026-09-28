@@ -8,6 +8,15 @@ Point = tuple[float, float]  # (lat, lng)
 class OSRMError(Exception):
     """OSRM could not answer: network problem, bad response, or unreachable stop."""
 
+class UnreachableError(OSRMError):
+    """OSRM found no road route between two stops."""
+
+    def __init__(self, source: int, destination: int):
+        super().__init__(f"No road route between stop {source} and stop {destination}")
+        self.source = source
+        self.destination = destination
+
+
 
 @dataclass
 class TableResult:
@@ -52,7 +61,8 @@ class OSRMClient:
         for i, row in enumerate(durations):
             for j, value in enumerate(row):
                 if value is None or distances[i][j] is None:
-                    raise OSRMError(f"No road route between stop {i} and stop {j}")
+                    raise UnreachableError(i, j)
+
 
         return TableResult(durations=durations, distances=distances)
 

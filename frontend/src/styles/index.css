@@ -23,10 +23,16 @@ body {
   height: 100%;
 }
 
-.route-map {
+.map-area {
+  position: relative;
   flex: 1;
+  min-width: 0;
+}
+
+.route-map {
   height: 100%;
 }
+
 
 /* Stop pins (used on the map and in the stop list) */
 .stop-pin {
@@ -205,4 +211,113 @@ body {
 .stop-list__remove:hover {
   background: #fef2f2;
   color: #b91c1c;
+}
+
+/* Route options */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.options__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.options__field select {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2937;
+  font: inherit;
+  font-size: 14px;
+}
+
+.options__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.options__toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+}
+
+.stop-list__item--return {
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Loading badge on the map */
+.map-status {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 20%);
+  font-size: 14px;
+  font-weight: 600;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #bfdbfe;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Reset / clear */
+.sidebar__actions {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #2563eb;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.link-button:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.link-button:disabled {
+  color: #9ca3af;
+  cursor: default;
 }

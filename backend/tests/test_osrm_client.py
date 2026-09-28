@@ -3,7 +3,7 @@ import asyncio
 import httpx
 import pytest
 
-from app.services.osrm_client import OSRMClient, OSRMError
+from app.services.osrm_client import OSRMClient, OSRMError, UnreachableError
 
 BASE_URL = "http://osrm.test/"  # trailing slash on purpose: the client should strip it
 POINTS = [(28.6129, 77.2295), (28.6315, 77.2167)]  # (lat, lng)
@@ -48,8 +48,11 @@ def test_unreachable_stop_raises():
             "distances": [[0, None], [4697.4, 0]],
         })
 
-    with pytest.raises(OSRMError, match="stop 0 and stop 1"):
+    with pytest.raises(UnreachableError, match="stop 0 and stop 1") as caught:
         call_osrm(handler, lambda osrm: osrm.get_table(POINTS))
+
+    assert (caught.value.source, caught.value.destination) == (0, 1)
+
 
 
 def test_route_flips_geometry_to_lat_lng():

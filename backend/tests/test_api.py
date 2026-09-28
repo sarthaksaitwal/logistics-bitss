@@ -4,8 +4,7 @@ from fastapi.testclient import TestClient
 from app.api.routes import get_osrm_client
 from app.config import settings
 from app.main import app
-from app.services.osrm_client import OSRMError, TableResult
-
+from app.services.osrm_client import OSRMError, TableResult, UnreachableError
 
 class FakeOSRM:
     """Stands in for OSRMClient: no internet, predictable numbers.
@@ -103,3 +102,16 @@ def test_osrm_failure_returns_502(client):
 
     assert response.status_code == 502
     assert response.json() == {"detail": "OSRM is down"}
+
+class UnreachableOSRM(FakeOSRM):
+    async def get_table(self, points):
+        raise UnreachableError(0, 2)
+
+
+def test_unreachable_stop_returns_422_with_names(client):
+    app.dependency_overrides[get_osrm_client] = lambda: UnreachableOSRM()
+
+    response = client.post("/api/optimize", json={"stops": STOPS})
+
+    assert response.status_code == 422
+    assert response.json()["detail"].startswith("No road route between depot and a.")
