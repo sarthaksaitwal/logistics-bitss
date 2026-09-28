@@ -46,6 +46,21 @@ React app ◄──── order, geometry, totals ──┘
 4. **Road geometry.** OSRM `/route` returns the exact road shape for the chosen order, which the frontend draws as a line.
 5. **Baseline.** The "entered order" route (start first, then the other stops as entered) is costed from the **same matrix**, so the "% faster" figure compares like with like.
 
+## Run with Docker
+
+The quickest way to run the app. Requires only [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+```bash
+git clone https://github.com/sarthaksaitwal/logistics-bitss.git
+cd logistics-bitss
+docker compose up --build
+```
+
+Open http://localhost:8080. The API docs are at http://localhost:8000/docs.
+
+The first build takes a few minutes; later starts take seconds. Stop with `Ctrl + C`, or run `docker compose down`.
+
+
 ## Running locally
 
 **Requirements:** Python 3.10+ and Node.js 18+.
