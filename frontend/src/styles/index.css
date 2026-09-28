@@ -1,0 +1,163 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  color: #1f2937;
+  background: #f9fafb;
+}
+
+/* Layout */
+.app {
+  display: flex;
+  height: 100%;
+}
+
+.route-map {
+  flex: 1;
+  height: 100%;
+}
+
+/* Stop pins (used on the map and in the stop list) */
+.stop-pin {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font: 600 13px/1 system-ui, sans-serif;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 40%);
+}
+
+.stop-pin--depot {
+  border-radius: 6px;
+  background: #111827;
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 16px;
+  width: 340px;
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.sidebar__header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sidebar__header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.sidebar h2 {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.optimize-button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.optimize-button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.optimize-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+/* Route summary */
+.summary {
+  padding: 14px;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.summary__saved {
+  margin: 0;
+  font-size: 14px;
+}
+
+.summary__saved strong {
+  display: block;
+  color: #1d4ed8;
+  font-size: 26px;
+}
+
+.summary__grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  margin: 12px 0 0;
+  font-size: 14px;
+}
+
+.summary__grid dt {
+  color: #6b7280;
+}
+
+.summary__grid dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Stop list */
+.stop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stop-list__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
