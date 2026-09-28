@@ -10,9 +10,19 @@ function makeIcon(label, isDepot) {
   })
 }
 
-function StopMarker({ stop, label, isDepot }) {
+function StopMarker({ stop, label, isDepot, onMove }) {
   return (
-    <Marker position={[stop.lat, stop.lng]} icon={makeIcon(label, isDepot)}>
+    <Marker
+      position={[stop.lat, stop.lng]}
+      icon={makeIcon(label, isDepot)}
+      draggable
+      eventHandlers={{
+        dragend: (event) => {
+          const { lat, lng } = event.target.getLatLng()
+          onMove(stop.id, lat, lng)
+        },
+      }}
+    >
       <Tooltip direction="top" offset={[0, -14]}>
         {stop.id}
       </Tooltip>

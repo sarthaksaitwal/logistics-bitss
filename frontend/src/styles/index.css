@@ -161,3 +161,48 @@ body {
   gap: 10px;
   font-size: 14px;
 }
+
+/* Draggable pins */
+.leaflet-marker-icon.leaflet-marker-draggable {
+  cursor: grab;
+}
+
+/* Adding and removing stops */
+.route-map.leaflet-grab {
+  cursor: crosshair;
+}
+
+.sidebar__header .hint {
+  margin-top: 8px;
+  color: #2563eb;
+  font-size: 13px;
+}
+
+.notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #fffbeb;
+  color: #92400e;
+  font-size: 14px;
+}
+
+.stop-list__name {
+  flex: 1;
+}
+
+.stop-list__remove {
+  padding: 2px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.stop-list__remove:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}

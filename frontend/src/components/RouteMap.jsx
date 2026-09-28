@@ -1,10 +1,19 @@
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import RouteLine from './RouteLine.jsx'
 import StopMarker from './StopMarker.jsx'
 
 const DELHI_CENTER = [28.59, 77.22]
 
-function RouteMap({ stops, result }) {
+function AddStopOnClick({ onAdd }) {
+  useMapEvents({
+    click(event) {
+      onAdd(event.latlng)
+    },
+  })
+  return null
+}
+
+function RouteMap({ stops, result, loading, onAddStop, onMoveStop }) {
   const order = result?.order
 
   return (
@@ -14,7 +23,8 @@ function RouteMap({ stops, result }) {
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {result && <RouteLine geometry={result.geometry} />}
+      <AddStopOnClick onAdd={onAddStop} />
+      <RouteLine geometry={result?.geometry} loading={loading} />
 
       {stops.map((stop, index) => {
         const position = order ? order.indexOf(stop.id) : index
@@ -24,6 +34,7 @@ function RouteMap({ stops, result }) {
             stop={stop}
             label={position === 0 ? 'D' : String(position)}
             isDepot={position === 0}
+            onMove={onMoveStop}
           />
         )
       })}

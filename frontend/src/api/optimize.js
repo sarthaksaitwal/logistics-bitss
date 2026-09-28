@@ -1,4 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+export const MAX_STOPS = 25 // must match the backend's max_stops setting
 
 export async function optimizeRoute({ stops, depotIndex = 0, returnToDepot = true }, signal) {
   let response
@@ -15,7 +16,7 @@ export async function optimizeRoute({ stops, depotIndex = 0, returnToDepot = tru
     })
   } catch (err) {
     if (err.name === 'AbortError') throw err
-    throw new Error(`Cannot reach the backend at ${API_URL}. Is it running?`)
+    throw new Error(`Cannot reach the backend at ${API_URL}. Is it running?`, { cause: err })
   }
 
   const data = await response.json().catch(() => null)
