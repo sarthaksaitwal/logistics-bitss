@@ -2,7 +2,8 @@
 
 **Find the fastest order for one driver to visit up to 25 stops, using real road travel times.**
 
-![Logistics bitss demo](docs/demo.gif)
+<!-- Demo GIF: record it, save it as docs/demo.gif, then uncomment the next line. -->
+<!-- ![Logistics bitss demo](docs/demo.gif) -->
 
 Drop pins on a map and the app works out the quickest order to visit them, draws the route along real roads, and shows how much drive time it saves compared with visiting the stops in the order you entered them.
 
